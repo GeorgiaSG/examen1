@@ -45,9 +45,58 @@
         <br><br>
         <?php
         //aqui va el código PHP para buscar y desplegar resultados
-        
+        if (isset($_REQUEST["letra"])) {
+            $letraParaBuscar = $_REQUEST["letra"];
+    
+            //buscamos los apellidos que inician con la letra seleccionada
+            $sql = "select idDirectorio, nombre, apellido, empresa, email from juanf_directorio where apellido like '" . $letraParaBuscar . "%' order by apellido";
+            $rs = ejecutar($sql);
+        } else if (isset($_POST["busqueda"])) {
+            $registroParaBuscar = $_POST["busqueda"];
+    
+            $sql = "select idDirectorio, nombre, apellido, empresa, email from juanf_directorio where apellido like '%" . $registroParaBuscar . "%' order by apellido";
+            $rs = ejecutar($sql);
+        }
         ?>
+        
+        <?php
+        if (isset($_REQUEST["letra"]) || isset($_POST["busqueda"])){
+            echo '<div id="r1">Registros encontrados: </div>';
+            echo '<ul class="listaNombres">';
 
+            //checamos si la búsqueda realizada encontró registros en la BD
+             if (mysqli_num_rows($rs) != 0){
+                $k = 0;
+                while ($datos = mysqli_fetch_array($rs)){
+                    if ($k % 2 == 0){
+                        echo "<li class='oscuro'>";
+                    }else{
+                        echo "<li class='claro'>";
+                    }
+                    echo "<a href='javascript:mostrarRegistro(".$datos['idDirectorio'].")'>".$datos["apellido"]."</a>, ".$datos["nombre"].", ".$datos["apellido"].", ".$datos["empresa"].", ".$datos["email"]."</li>";
+                    $k++;
+                }
+            }else{
+                echo 'No se encontraron registros con la búsqueda realizada';
+            }
+            echo "</ul>";
+
+        }else if (isset($_REQUEST["id"])){
+            // checamos si se ha enviado un id para buscar un registro en particular
+            $id = $_REQUEST["id"];
+
+            //hacemos un query para obtener toda la información del registro que se desea deplegar
+            $sql = "select * from juanf_directorio where idDirectorio =".$id;
+
+            //ejecutamos el query
+            $rs = ejecutar($sql);
+
+            $datosRegistro = mysqli_fetch_array($rs);
+
+        } else {
+            echo '<div id="r1">Seleccione una letra o realize una búsqueda para desplegar los registros del directorio</div>';
+        }
+        ?>  
 
     </div>
 
