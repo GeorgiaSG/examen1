@@ -26,8 +26,10 @@ function validarTelefono2(){
     }
 
     if(!flagDigitos && !flagCaracteres){
-        document.getElementById("msg").innerHTML="";
-        digtel.push("El telefono ingresado es correcto");
+        document.getElementById("msg").innerHTML = "";
+        var li = document.createElement("li");
+        li.innerHTML = "<span class = 'telefonoCorrecto'>El teléfono ingresado es correcto</span>";
+        document.getElementById("msg").appendChild(li);
     }else{
         imprimirErrores(digtel);
     }
