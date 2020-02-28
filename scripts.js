@@ -34,11 +34,9 @@ function validarTelefono2(){
 }
 
 function imprimirErrores(errores){
-    //borramos todos lo errores impresos anteriormente si es que existen
     var listaErrores = document.getElementById("msg");
     listaErrores.innerHTML = "";
 
-    //leemos el arreglo errores y por cada uno de sus elementos creamos un elemento li que añadimos al tag ul que representa o muestra la lista de errores
     errores.forEach(function (error){
         var li = document.createElement("li");
         li.innerHTML = "<span class = 'error'>"+error+"</span>";
